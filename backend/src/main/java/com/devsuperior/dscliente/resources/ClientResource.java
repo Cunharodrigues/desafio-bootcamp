@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.devsuperior.dscliente.dto.ClientDTO;
+
 @RestController
 @RequestMapping(value = "/clients")
 public class ClientResource {

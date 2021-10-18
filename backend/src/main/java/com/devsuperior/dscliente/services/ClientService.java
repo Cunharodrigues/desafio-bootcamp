@@ -1,6 +1,7 @@
 package com.devsuperior.dscliente.services;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.devsuperior.dscliente.dto.ClientDTO;
 import com.devsuperior.dscliente.entities.Client;
 import com.devsuperior.dscliente.repositories.ClientRepository;
 
@@ -23,16 +25,17 @@ public class ClientService {
 	private ClientRepository repository;
 
 	@Transactional(readOnly = true)
-	public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
-		Page<Client> list = repository.findAll(pageRequest);
+	public Page<ClientDTO> findAllPage(PageRequest pageRequest) {
+		Page<Client> list = repository.findAll( pageRequest);
 		return list.map(x -> new ClientDTO(x));
+		
 	}
 
 	@Transactional(readOnly = true)
 	public ClientDTO findById(Long id) {
 		Optional<Client> obj = repository.findById(id);
 		Client entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		return new ClientDTO(ententy);
+		return new ClientDTO(entity);
 	}
 
 	@Transactional
