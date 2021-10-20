@@ -5,7 +5,9 @@ import java.time.Instant;
 
 import com.devsuperior.dscliente.entities.Client;
 
-public class ClientDTO implements Serializable {
+//import com.devsuperior.dsProducte.entities.Product;
+
+public class ProductDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -15,11 +17,22 @@ public class ClientDTO implements Serializable {
 	private Instant birtDate;
 	private Integer children;
 
-	public ClientDTO() {
+	public ProductDTO() {
 
 	}
 
-	public ClientDTO(Client entity) {
+	public ProductDTO(Long id, String name, String cpf, Double income, Instant birtDate, Integer children) {
+
+		this.id = id;
+		this.name = name;
+		this.cpf = cpf;
+		this.income = income;
+		this.birtDate = birtDate;
+		this.children = children;
+
+	}
+
+	public ProductDTO(Client entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.cpf = entity.getCpf();
