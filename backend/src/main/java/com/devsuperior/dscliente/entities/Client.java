@@ -2,11 +2,17 @@ package com.devsuperior.dscliente.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,6 +28,19 @@ public class Client implements Serializable {
 	private double income;
 	private Instant birtDate;
 	private Integer children;
+
+	@Column (columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+			private Instant createdAt;
+			
+	@Column (columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+			private Instant updatedAt;
+	
+	@ManyToMany
+	@JoinTable (name = "tb_product_client",
+		joinColumns = @JoinColumn (name = "product_id"),
+		inverseJoinColumns = @JoinColumn (name = "client_id"))
+	Set<Client> clienties = new HashSet<>();
+	
 
 	public Client() {
 

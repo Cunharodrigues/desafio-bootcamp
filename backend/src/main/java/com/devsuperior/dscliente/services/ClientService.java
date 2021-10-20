@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import javax.xml.bind.DataBindingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.devsuperior.dscliente.dto.ClientDTO;
 import com.devsuperior.dscliente.entities.Client;
 import com.devsuperior.dscliente.repositories.ClientRepository;
+import com.devsuperior.dscliente.services.exception.DatabaseException;
+import com.devsuperior.dscliente.services.exception.ResourceNotFoundException;
 
 @Service
 public class ClientService {
@@ -25,8 +26,8 @@ public class ClientService {
 	private ClientRepository repository;
 
 	@Transactional(readOnly = true)
-	public Page<ClientDTO> findAllPage(PageRequest pageRequest) {
-		Page<Client> list = repository.findAll( pageRequest);
+	public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
+		Page<Client> list = repository.findAll(pageRequest);
 		return list.map(x -> new ClientDTO(x));
 		
 	}
@@ -34,10 +35,18 @@ public class ClientService {
 	@Transactional(readOnly = true)
 	public ClientDTO findById(Long id) {
 		Optional<Client> obj = repository.findById(id);
-		Client entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+		Client entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
 		return new ClientDTO(entity);
 	}
 
+	@Transactional
+	public ClientDTO insert(ClientDTO dto) {
+		Client entity = new Client();
+		entity.setName(dto.getName());
+		entity = repository.save(entity);
+		return new ClientDTO(entity);
+	}
+	
 	@Transactional
 	public ClientDTO update(Long id, ClientDTO dto) {
 		try {
@@ -49,19 +58,24 @@ public class ClientService {
 			entity.setChildren(dto.getChildren());
 			entity = repository.save(entity);
 			return new ClientDTO(entity);
-		} catch (EntityNotFoundException e) {
+		} 
+		catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found" + id);
 		}
 
-	}
-
-	public void delete(Long id) {
-		Try {
-		repository.deleteById(id);
-		}catch(EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("If not found" + id);
-		}catch(DataIntegrityViolationException e) {
-			Throw new DataBindingException("Integrity violation");
+	public void delete(long id) {
+		try {
+			repository.deleteById(id);
 		}
+		catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Entity not found" + id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Integrity violation");
+		}
+		
+		}
+
 	}
+	
 }

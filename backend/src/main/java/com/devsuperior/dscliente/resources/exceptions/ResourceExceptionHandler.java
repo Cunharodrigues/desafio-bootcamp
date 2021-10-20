@@ -1,24 +1,26 @@
 package com.devsuperior.dscliente.resources.exceptions;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
 import java.time.Instant;
 
+import javax.persistence.EntityNotFoundException;
+import javax.security.auth.message.callback.SecretKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Status;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.devsuperior.dscliente.services.ResourceNotFoundException;
+import com.devsuperior.dscliente.services.exception.DatabaseException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request) {
-		HttpStatus status = HttpStatus.NOT_FOUND;
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
@@ -34,9 +36,9 @@ public class ResourceExceptionHandler {
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
-		err.setError("Resource not found");
+		err.setError("Database exception");
 		err.setMessage(e.getMessage());
-		err.setPath(request.getRequestURI());
+		err.setPath(Request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 
