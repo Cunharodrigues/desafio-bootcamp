@@ -24,14 +24,14 @@ public class ClientService {
 	@Autowired
 	private ClientRepository repository;
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
 		Page<Client> list = repository.findAll(pageRequest);
 		return list.map(x -> new ClientDTO(x));
 
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public ClientDTO findById(Long id) {
 		Optional<Client> obj = repository.findById(id);
 		Client entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
