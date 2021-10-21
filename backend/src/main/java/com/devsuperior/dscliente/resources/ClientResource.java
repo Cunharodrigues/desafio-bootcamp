@@ -2,7 +2,7 @@ package com.devsuperior.dscliente.resources;
 
 import java.net.URI;
 
-import org.hibernate.mapping.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -19,11 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.devsuperior.dscliente.dto.ClientDTO;
+import com.devsuperior.dscliente.services.ClientService;
+
+
 
 @RestController
 @RequestMapping(value = "/clienties")
 public class ClientResource {
 
+	@Autowired
+	private ClientService service; 
+
+	
 	@GetMapping
 	public ResponseEntity<Page<ClientDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
@@ -32,7 +39,7 @@ public class ClientResource {
 			) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		
-		Page<ClientDTO> list = service.findAllpaged(pageRequest);
+		Page<ClientDTO> list = service.findAllPaged(pageRequest);
 		
 		return ResponseEntity.ok().body(list);
 	}
@@ -57,8 +64,7 @@ public class ClientResource {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<ClientDTO> delete(@PathVariable Long id) {
-
+	public ResponseEntity<ClientDTO>delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}

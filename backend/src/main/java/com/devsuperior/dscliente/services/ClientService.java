@@ -1,7 +1,6 @@
 package com.devsuperior.dscliente.services;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -29,7 +28,7 @@ public class ClientService {
 	public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
 		Page<Client> list = repository.findAll(pageRequest);
 		return list.map(x -> new ClientDTO(x));
-		
+
 	}
 
 	@Transactional(readOnly = true)
@@ -46,7 +45,7 @@ public class ClientService {
 		entity = repository.save(entity);
 		return new ClientDTO(entity);
 	}
-	
+
 	@Transactional
 	public ClientDTO update(Long id, ClientDTO dto) {
 		try {
@@ -58,24 +57,22 @@ public class ClientService {
 			entity.setChildren(dto.getChildren());
 			entity = repository.save(entity);
 			return new ClientDTO(entity);
-		} 
-		catch (EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found" + id);
 		}
 
-	public void delete(long id) {
+	}
+
+	public void delete(Long id) {
+
 		try {
 			repository.deleteById(id);
-		}
-		catch (EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Entity not found" + id);
-		}
-		catch (DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
-		}
-		
 		}
 
 	}
-	
+
 }
