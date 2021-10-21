@@ -24,7 +24,7 @@ import com.devsuperior.dscliente.services.ClientService;
 
 
 @RestController
-@RequestMapping(value = "/clienties")
+@RequestMapping(value = "/clients")
 public class ClientResource {
 
 	@Autowired
