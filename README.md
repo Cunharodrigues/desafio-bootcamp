@@ -7,6 +7,8 @@ Busca de recurso por id
 Inserir novo recurso
 Atualizar recurso
 Deletar recurso
-O projeto deverá estar com um ambiente de testes configurado acessando o banco de dados H2, deverá usar Maven como gerenciador de dependência, Java 11 como l inguagem. Um cliente possui nome, CPF, renda, data de nascimento, e quantidade de filhos. A especificação da entidade Client é mostrada a seguir (você deve sequir à risca os nomes de classe e atributos mostrados no diagrama):
 
-11
+O projeto deverá estar com um ambiente de testes configurado acessando o banco de dados H2, deverá usar Maven como gerenciador de dependência, Java 11 como l inguagem.
+Um cliente possui nome, CPF, renda, data de nascimento, e quantidade de filhos. 
+A especificação da entidade Client é mostrada a seguir (você deve sequir à risca os nomes de classe e atributos mostrados no diagrama):
+
