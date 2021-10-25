@@ -44,6 +44,12 @@ public class ClientResource {
 		return ResponseEntity.ok().body(list);
 	}
 
+	/*@GetMapping
+	public ResponseEntity<Page<ClientDTO>> findAll() {
+		Page<ClientDTO> page = service.findAllPaged(null);
+		return ResponseEntity.ok().body(page);
+	}*/
+	
 	@GetMapping(value = "/{id}")
 		public ResponseEntity<ClientDTO> findById(@PathVariable Long id) {
 			ClientDTO dto = service.findById(id);
