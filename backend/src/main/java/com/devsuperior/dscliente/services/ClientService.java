@@ -62,7 +62,7 @@ public class ClientService {
 			entity.setChildren(dto.getChildren());
 			entity = repository.save(entity);
 			return new ClientDTO(entity);
-		} catch (ResourceNotFoundException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found" + id);
 		}
 
